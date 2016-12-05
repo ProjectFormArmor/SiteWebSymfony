@@ -72,6 +72,13 @@ form_armor_admin_session_supp:
     path:     /admin/session/supp/{id}
     defaults:
         _controller: FormArmorBundle:Admin:suppSession
+form_armor_admin_valid:
+    path:     /admin/valid/{page}
+    defaults:
+        _controller: FormArmorBundle:Admin:listeInscript
+        page:     1
+    requirements:
+        page: \d*
 form_armor_admin_planformation:
     path:     /admin/planformation/{page}
     defaults:

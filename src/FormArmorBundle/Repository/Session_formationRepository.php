@@ -5,6 +5,8 @@ namespace FormArmorBundle\Repository;
 use Doctrine\ORM\EntityRepository;
 use Doctrine\ORM\QueryBuilder;
 use Doctrine\ORM\Tools\Pagination\Paginator;
+use DateTime;
+use DateInterval;
 
 /**
  * Session_formationRepository
@@ -32,6 +34,29 @@ class Session_formationRepository extends \Doctrine\ORM\EntityRepository
 		  // Ainsi que le nombre de formations à afficher sur une page
 		  ->setMaxResults($nbParPage)
 		;
+
+		// Enfin, on retourne l'objet Paginator correspondant à la requête construite
+		// (=>Ne pas oublier le "use Doctrine\ORM\Tools\Pagination\Paginator;" correspondant en début de fichier)
+		return new Paginator($query, true);
+	}
+        public function listeSessionsInscript($page, $nbParPage) // Liste toutes les sessions avec pagination et date < 8 jours
+	{
+		$queryBuilder = $this->createQueryBuilder('s');
+		// On n'ajoute pas de critère ou tri particulier ici car on veut tous les statuts, la construction
+		// de notre requête est donc finie
+		// On récupère la Query à partir du QueryBuilder
+                $date_jour = new DateTime();
+                $date_semaine = new DateTime();
+                $date_semaine->add(new DateInterval('P10D')); 
+                $query = $queryBuilder->select(array('s'))
+                    ->where($queryBuilder->expr()->between('s.date_debut', ':date_jour', ':date_semaine'))
+                    ->setParameters(array('date_jour'=>$date_jour,'date_semaine'=>$date_semaine))
+                    // On gère ensuite la pagination grace au service Paginator qui nous fournit
+                    // entre autres les méthodes setFirstResult et setMaxResults
+                    // On définit la formation à partir de laquelle commencer la liste
+                    ->setFirstResult(($page-1) * $nbParPage)
+                    // Ainsi que le nombre de formations à afficher sur une page
+                    ->setMaxResults($nbParPage);
 
 		// Enfin, on retourne l'objet Paginator correspondant à la requête construite
 		// (=>Ne pas oublier le "use Doctrine\ORM\Tools\Pagination\Paginator;" correspondant en début de fichier)
