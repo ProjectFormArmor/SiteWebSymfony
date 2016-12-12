@@ -10,4 +10,12 @@ namespace FormArmorBundle\Repository;
  */
 class InscriptionRepository extends \Doctrine\ORM\EntityRepository
 {
+    public function listeClientUneSession($idSession)
+        {
+           $queryBuilder = $this->createQueryBuilder('i');
+           $query = $queryBuilder->select(array('i'))
+                   ->where($queryBuilder->expr()->eq('i.session_formation', ':idSession'))
+                   ->setParameter('idSession', $idSession);
+           return $query->getQuery()->getResult();
+        }
 }

@@ -50,7 +50,7 @@ class Session_formationRepository extends \Doctrine\ORM\EntityRepository
                 $date_semaine->add(new DateInterval('P10D')); 
                 $query = $queryBuilder->select(array('s'))
                     ->where($queryBuilder->expr()->between('s.dateDebut', ':date_jour', ':date_semaine'))
-                    ->andWhere($queryBuilder->expr()->gte('s.nbInscrits', 0))
+                    ->andWhere($queryBuilder->expr()->lt('s.nbInscrits', 's.nbPlaces'))
                     ->setParameters(array('date_jour'=>$date_jour,'date_semaine'=>$date_semaine))
                     // On gère ensuite la pagination grace au service Paginator qui nous fournit
                     // entre autres les méthodes setFirstResult et setMaxResults

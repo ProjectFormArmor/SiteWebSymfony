@@ -1,0 +1,39 @@
+{% extends "FormArmorBundle::admin_layout.html.twig" %}
+{% block FormArmor_body %}
+	<h2>AFFICHAGE DES CLIENTS INSCRIPT A LA SESSION N°{{idSession}}</h2>
+	<table class="table">
+		<thead>
+		<tr>
+			<th>Numero Inscript</th>
+			<th>Nom Client</th>
+			<th>Statut</th>
+			<th>Adresse</th>
+			<th>Code postal</th>
+			<th>Ville</th>
+			<th>Email</th>
+			<th>Date Inscription</th>
+		</tr>
+		</thead>
+		<tbody>
+			{% for clientinscript in lesClients %}
+				<tr {# si le nombre de passages dans la boucle est pair #} {% if loop.index is even %} class="success" {% else %} class="info" {% endif %}>
+					<td>{{clientinscript.id}}</td>
+					<td>{{clientinscript.client.nom}}</td>
+					<td>{{clientinscript.client.statut.type}}</td>
+					<td>{{clientinscript.client.adresse}}</td>
+					<td>{{clientinscript.client.cp}}</td>
+					<td>{{clientinscript.client.ville}}</td>
+					<td>{{clientinscript.client.email}}</td>
+                                        <td>{{clientinscript.dateInscription|date("d/m/Y")}}</td>
+				</tr>
+			{% endfor %}
+		</tbody>
+	</table>
+	
+	<script>
+		$(function() {
+			$('#menu6').attr('class', 'active');
+		});
+	</script>
+	
+{% endblock %}

@@ -80,9 +80,12 @@ form_armor_admin_valid_session:
     requirements:
         page: \d*
 form_armor_admin_validunesession:
-    path:     /admin/validsession/confirm/{id}
+    path:     /admin/validsession/confirm/{idSession}
     defaults:
         _controller: FormArmorBundle:Admin:confirmValidSession
+        _id: 0
+    requirements: 
+        idSession: \d*
 form_armor_admin_planformation:
     path:     /admin/planformation/{page}
     defaults:

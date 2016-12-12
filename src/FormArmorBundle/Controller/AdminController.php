@@ -663,4 +663,15 @@ class AdminController extends Controller
               'page'        => $page,
             ));
 	}
+    public function confirmValidSessionAction($idSession)
+        {
+            $em = $this->getDoctrine()->getManager();
+            $rep = $em->getRepository('FormArmorBundle:Inscription');
+            $lesClients = $rep->listeClientUneSession($idSession);
+            
+            return $this->render('FormArmorBundle:Admin:confirmSession.html.twig', array(
+                'lesClients' => $lesClients,
+                'idSession' => $idSession
+            ));
+        }
 }
