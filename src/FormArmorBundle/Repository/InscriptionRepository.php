@@ -18,4 +18,13 @@ class InscriptionRepository extends \Doctrine\ORM\EntityRepository
                    ->setParameter('idSession', $idSession);
            return $query->getQuery()->getResult();
         }
+    public function listeMailuneSession($idSession)
+        {
+            $qb = $this->createQueryBuilder('i');
+            $query = $qb->select('c.email')
+                    ->join('i.client', 'c')
+                    ->where($qb->expr()->eq('i.session_formation', ':idSession'))
+                    ->setParameter('idSession', $idSession);
+            return $query->getQuery()->getArrayResult();
+        }
 }

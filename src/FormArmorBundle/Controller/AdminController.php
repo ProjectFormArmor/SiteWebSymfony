@@ -634,7 +634,11 @@ class AdminController extends Controller
 	{
             if ($page < 1)
                 {
-                    throw $this->createNotFoundException("La page ".$page." n'existe pas.");
+                    return $this->render('FormArmorBundle:Admin:inscript.html.twig', array(
+                    'lesSessions' => null,
+                    'nbPages'     => 0,
+                    'page'        => 0,
+                    ));
                 }
 
             // On peut fixer le nombre de lignes avec la ligne suivante :
@@ -653,7 +657,11 @@ class AdminController extends Controller
             // Si la page n'existe pas, on retourne une erreur 404
             if ($page > $nbPages)
             {
-                    throw $this->createNotFoundException("La page ".$page." n'existe pas.");
+                    return $this->render('FormArmorBundle:Admin:inscript.html.twig', array(
+                    'lesSessions' => null,
+                    'nbPages'     => 0,
+                    'page'        => 0,
+                    ));
             }
 
             // On donne toutes les informations nécessaires à la vue
@@ -665,13 +673,35 @@ class AdminController extends Controller
 	}
     public function confirmValidSessionAction($idSession)
         {
+            $PrixSession = 140;
             $em = $this->getDoctrine()->getManager();
             $rep = $em->getRepository('FormArmorBundle:Inscription');
+            $rep2 = $em->getRepository('FormArmorBundle:Statut');
+            $rep3 = $em->getRepository('FormArmorBundle:Formation');
             $lesClients = $rep->listeClientUneSession($idSession);
-            
+            $RevenueSession = $rep2->sommeSt($idSession);
+            $Marge = $RevenueSession - $PrixSession;
+            //$LaSession = $rep3->retuSession($idSession);
             return $this->render('FormArmorBundle:Admin:confirmSession.html.twig', array(
                 'lesClients' => $lesClients,
-                'idSession' => $idSession
+                'idSession' => $idSession,
+                'Marge' => $Marge
             ));
+        }
+    public function valideLaSessionAction($idSession)
+        {
+            $em = $this->getDoctrine()->getManager();
+            $rep = $em->getRepository('FormArmorBundle:Inscription');
+            $rep2 = $em->getRepository('FormArmorBundle:Session_formation');
+            $lesMail = $rep->listeMailuneSession($idSession);
+            $rep2->closeUneSession($idSession);
+            return $this->render('FormArmorBundle:Admin:SessionValide.html.twig', array(
+                'idSession' => $idSession, 
+                'lesMail' => $lesMail
+                    ));
+        }
+    public function annulerLaSessionAction($idSession)
+        {
+        
         }
 }

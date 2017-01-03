@@ -1,6 +1,9 @@
 {% extends "FormArmorBundle::admin_layout.html.twig" %}
 {% block FormArmor_body %}
-	<h2>AFFICHAGE DES SESSIONS POUR CONFIRMATION D'INSCRIPTION</h2>
+    {% if lesSessions == null%}
+        <h2>AUCUNE SESSIONS POUR CONFIRMATION D'INSCRIPTION</h2>
+    {% else %}
+        <h2>AFFICHAGE DES SESSIONS POUR CONFIRMATION D'INSCRIPTION</h2>
 	<table class="table">
 		<thead>
 		<tr>
@@ -26,7 +29,7 @@
 					{% else %}
 						<td>Non</td>
 					{% endif %}
-                                        <td><a href="{{path('form_armor_admin_validunesession', {'id':session.id})}}"><button type="button" class="btn btn-info"> Valider </button></a></td>
+                                        <td><a href="{{path('form_armor_admin_validunesession', {'idSession':session.id})}}"><button type="button" class="btn btn-info"> Valider </button></a></td>
 				</tr>
 			{% endfor %}
 		</tbody>
@@ -47,4 +50,5 @@
 		});
 	</script>
 	
+    {% endif %}
 {% endblock %}

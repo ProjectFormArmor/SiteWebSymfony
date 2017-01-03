@@ -29,7 +29,9 @@
 			{% endfor %}
 		</tbody>
 	</table>
-	
+                <h3> Marge dégagée par la session : {{Marge}} €</h3>
+                <a href="{{path('form_armor_admin_validelasession', {'id':idSession})}}"><button type="button" class="btn btn-success"> Valider la Session </button></a>
+                <a href="{{path('form_armor_admin_annulelasession', {'id':idSession})}}"><button type="button" class="btn btn-danger"> Annuler la Session </button></a>
 	<script>
 		$(function() {
 			$('#menu6').attr('class', 'active');

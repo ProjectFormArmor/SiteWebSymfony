@@ -46,7 +46,8 @@ class FormationRepository extends \Doctrine\ORM\EntityRepository
 		// (=>Ne pas oublier le "use Doctrine\ORM\Tools\Pagination\Paginator;" correspondant en début de fichier)
 		return new Paginator($query, true);
 	}
-	public function suppFormation($id) // Suppression de la formation d'identifiant $id
+
+        public function suppFormation($id) // Suppression de la formation d'identifiant $id
 	{
 		$qb = $this->createQueryBuilder('f');
 		$query = $qb->delete('FormArmorBundle\Entity\Formation', 'f')

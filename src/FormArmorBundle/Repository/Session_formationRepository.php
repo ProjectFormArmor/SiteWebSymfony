@@ -72,4 +72,21 @@ class Session_formationRepository extends \Doctrine\ORM\EntityRepository
 		
 		return $qb->getQuery()->getResult();
 	}
+        public function retuSession($id)
+        {
+            $qb= $this->createQueryBuilder('s');
+            $query = $qb->select(array('s'))
+                    ->where($qb->expr()->eq('s.id', ':id'))
+                    ->setParameter('id', $id);
+            return $query->getQuery()->getResult();
+        }
+        public function closeUneSession($idSession)
+        {
+            $qb = $this->createQueryBuilder('s');
+            $query = $qb->update('FormArmorBundle\Entity\Session_formation', 's')
+                    ->set('s.close', 1)
+                    ->where($qb->expr()->eq('s.id', ':idSession'))
+                    ->setParameter('idSession', $idSession);
+            $query->getQuery()->execute();
+        }
 }

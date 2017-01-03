@@ -37,13 +37,25 @@ class StatutRepository extends \Doctrine\ORM\EntityRepository
 		// (=>Ne pas oublier le "use Doctrine\ORM\Tools\Pagination\Paginator;" correspondant en début de fichier)
 		return new Paginator($query, true);
 	}
+        public function sommeSt($idSession) 
+            {
+                $query = $this->getEntityManager()->createQuery('SELECT sum(st.tauxHoraire) AS revenu_session FROM FormArmorBundle\Entity\Statut st, FormArmorBundle\Entity\Inscription i, FormArmorBundle\Entity\Client c, FormArmorBundle\Entity\Session_formation s WHERE s.id = i.session_formation AND c.id = i.client AND c.statut = st.id and s.id = ?1')
+                        ->setParameter('1', $idSession);
+                try 
+                    {
+                        return $query->getSingleScalarResult();
+                    }
+                catch (\Doctrine\ORM\NoResultException $exc) 
+                    {
+                        return null;
+                    }
+            }
 	public function suppStatut($id) // Suppression du statut d'identifiant $id
 	{
 		$qb = $this->createQueryBuilder('s');
 		$query = $qb->delete('FormArmorBundle\Entity\Statut', 's')
 		  ->where('s.id = :id')
 		  ->setParameter('id', $id);
-		
 		return $qb->getQuery()->getResult();
 	}
 }

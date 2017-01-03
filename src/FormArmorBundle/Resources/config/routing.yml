@@ -8,7 +8,6 @@ form_armor_formations:
         page:     1
     requirements:
         page: \d*
-
 form_armor_admin:
     path:     /admin
     defaults: { _controller: FormArmorBundle:Admin:authentif }
@@ -83,6 +82,20 @@ form_armor_admin_validunesession:
     path:     /admin/validsession/confirm/{idSession}
     defaults:
         _controller: FormArmorBundle:Admin:confirmValidSession
+        _id: 0
+    requirements: 
+        idSession: \d*
+form_armor_admin_validelasession:
+    path:     /admin/validsession/valider/{id}
+    defaults:
+        _controller: FormArmorBundle:Admin:valideLaSession
+        _id: 0
+    requirements:
+        idSession: \d*
+form_armor_admin_annulelasession:
+    path:     /admin/validsession/annuler/{id}
+    defaults:
+        _controller: FormArmorBundle:Admin:annulerLaSession
         _id: 0
     requirements: 
         idSession: \d*
