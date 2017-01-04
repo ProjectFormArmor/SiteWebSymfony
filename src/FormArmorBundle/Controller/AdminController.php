@@ -673,13 +673,13 @@ class AdminController extends Controller
 	}
     public function confirmValidSessionAction($idSession)
         {
-            $PrixSession = 140;
             $em = $this->getDoctrine()->getManager();
             $rep = $em->getRepository('FormArmorBundle:Inscription');
             $rep2 = $em->getRepository('FormArmorBundle:Statut');
-            $rep3 = $em->getRepository('FormArmorBundle:Formation');
+            $rep3 = $em->getRepository('FormArmorBundle:Session_formation');
             $lesClients = $rep->listeClientUneSession($idSession);
             $RevenueSession = $rep2->sommeSt($idSession);
+            $PrixSession = $rep3->retuPrixSession($idSession);
             $Marge = $RevenueSession - $PrixSession;
             //$LaSession = $rep3->retuSession($idSession);
             return $this->render('FormArmorBundle:Admin:confirmSession.html.twig', array(
@@ -694,10 +694,24 @@ class AdminController extends Controller
             $rep = $em->getRepository('FormArmorBundle:Inscription');
             $rep2 = $em->getRepository('FormArmorBundle:Session_formation');
             $lesMail = $rep->listeMailuneSession($idSession);
+            $laSession = $rep2->retuSession($idSession);
             $rep2->closeUneSession($idSession);
+            $message = \Swift_Message::newInstance();
+            $message->setSubject('[FORMARMOR]Confirmation de la Session n°'.$idSession);
+            $message->setFrom('valentin_dejoue@live.fr');
+            $message->setBcc('valoo221@gmail.com');
+            $message->setBody(
+                    $this->renderView('Email/MailConfirmationSession.html.twig', array(
+                        'laSession' => $laSession
+                        )
+                    ),
+                    'text/html'
+            );
+            $this->get('mailer')->send($message);
             return $this->render('FormArmorBundle:Admin:SessionValide.html.twig', array(
-                'idSession' => $idSession, 
-                'lesMail' => $lesMail
+                'laSession' => $laSession, 
+                'lesMail' => $lesMail,
+                'leMessage' => $message
                     ));
         }
     public function annulerLaSessionAction($idSession)

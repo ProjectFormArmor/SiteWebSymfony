@@ -51,6 +51,7 @@ class Session_formationRepository extends \Doctrine\ORM\EntityRepository
                 $query = $queryBuilder->select(array('s'))
                     ->where($queryBuilder->expr()->between('s.dateDebut', ':date_jour', ':date_semaine'))
                     ->andWhere($queryBuilder->expr()->lt('s.nbInscrits', 's.nbPlaces'))
+                    ->andWhere($queryBuilder->expr()->eq('s.close', 0))
                     ->setParameters(array('date_jour'=>$date_jour,'date_semaine'=>$date_semaine))
                     // On gère ensuite la pagination grace au service Paginator qui nous fournit
                     // entre autres les méthodes setFirstResult et setMaxResults
@@ -72,14 +73,24 @@ class Session_formationRepository extends \Doctrine\ORM\EntityRepository
 		
 		return $qb->getQuery()->getResult();
 	}
-        public function retuSession($id)
+        public function retuPrixSession($id)
         {
             $qb= $this->createQueryBuilder('s');
-            $query = $qb->select(array('s'))
+            $query = $qb->select('f.coutrevient')
+                    ->join('s.formation', 'f')
                     ->where($qb->expr()->eq('s.id', ':id'))
                     ->setParameter('id', $id);
-            return $query->getQuery()->getResult();
+            return $query->getQuery()->getSingleScalarResult();
         }
+        public function retuSession($id)
+        {
+            $qb = $this->createQueryBuilder('s');
+            $query = $qb->select(array('s'))
+                    ->where($qb->expr()->eq('s.id', ':idSession'))
+                    ->setParameter('idSession', $id);
+            return $query->getQuery()->getSingleResult();
+        }
+
         public function closeUneSession($idSession)
         {
             $qb = $this->createQueryBuilder('s');

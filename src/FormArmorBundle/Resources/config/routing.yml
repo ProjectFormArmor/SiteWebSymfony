@@ -82,21 +82,21 @@ form_armor_admin_validunesession:
     path:     /admin/validsession/confirm/{idSession}
     defaults:
         _controller: FormArmorBundle:Admin:confirmValidSession
-        _id: 0
+        _idSession: 0
     requirements: 
         idSession: \d*
 form_armor_admin_validelasession:
-    path:     /admin/validsession/valider/{id}
+    path:     /admin/validsession/valider/{idSession}
     defaults:
         _controller: FormArmorBundle:Admin:valideLaSession
-        _id: 0
+        _idSession: 0
     requirements:
         idSession: \d*
 form_armor_admin_annulelasession:
-    path:     /admin/validsession/annuler/{id}
+    path:     /admin/validsession/annuler/{idSession}
     defaults:
         _controller: FormArmorBundle:Admin:annulerLaSession
-        _id: 0
+        _idSession: 0
     requirements: 
         idSession: \d*
 form_armor_admin_planformation:

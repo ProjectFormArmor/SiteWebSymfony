@@ -1,5 +1,8 @@
 {% extends "FormArmorBundle::admin_layout.html.twig" %}
 {% block FormArmor_body %}
-<h2>LA SESSION N° {{ idSession }} A BIEN ETE VALIDER , UN MAIL DE CONFIRMATION A ETE ENVOYER AU ADRESSE SUIVANTE</h2>
-{{ LesMail }}
+<h4>LA SESSION N° {{ laSession.id }} QUI A POUR LIBELLE {{laSession.formation.libelle}} A BIEN ETE VALIDER , UN MAIL DE CONFIRMATION A ETE ENVOYER AU ADRESSE SUIVANTE :</h4>
+{% for mail in lesMail%}
+    <h7>{{ mail.email }} </h7> <br>
+{% endfor %}
+{{dump(leMessage)}}
 {% endblock %}
