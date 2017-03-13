@@ -25,6 +25,12 @@ class InscriptionRepository extends \Doctrine\ORM\EntityRepository
                     ->join('i.client', 'c')
                     ->where($qb->expr()->eq('i.session_formation', ':idSession'))
                     ->setParameter('idSession', $idSession);
-            return $query->getQuery()->getArrayResult();
+            $lesMail = $query->getQuery()->getArrayResult();
+            $lesMailF = [];
+            for($i=0;$i<count($lesMail);$i++)
+            {
+                array_push($lesMailF,$lesMail[$i]['email']);
+            }
+            return $lesMailF;
         }
 }

@@ -696,26 +696,69 @@ class AdminController extends Controller
             $lesMail = $rep->listeMailuneSession($idSession);
             $laSession = $rep2->retuSession($idSession);
             $rep2->closeUneSession($idSession);
-            $message = \Swift_Message::newInstance();
-            $message->setSubject('[FORMARMOR]Confirmation de la Session n°'.$idSession);
-            $message->setFrom('valentin_dejoue@live.fr');
-            $message->setBcc('valoo221@gmail.com');
-            $message->setBody(
-                    $this->renderView('Email/MailConfirmationSession.html.twig', array(
-                        'laSession' => $laSession
-                        )
-                    ),
-                    'text/html'
-            );
-            $this->get('mailer')->send($message);
-            return $this->render('FormArmorBundle:Admin:SessionValide.html.twig', array(
-                'laSession' => $laSession, 
-                'lesMail' => $lesMail,
-                'leMessage' => $message
-                    ));
+            $transport = \Swift_SmtpTransport::newInstance()
+            ->setUsername('valoo221@gmail.com')->setPassword('Harry20012')
+            ->setHost('smtp.gmail.com')
+            ->setPort(587)->setEncryption('tls');
+            $mailer= \Swift_Mailer::newInstance($transport);
+            $message = \Swift_Message::newInstance()
+            ->setSubject('Confiramtion d\'inscription a la Session N°'.$idSession.' avec FormArmor')
+            ->setFrom('valoo221@gmail.com','FormArmor Inc.')
+            ->setBcc($lesMail)
+            ->setBody($this->renderView('Email/MailConfirmationSession.html.twig',array('laSession' => $laSession)));
+            $result=$mailer->send($message);
+            return $this->render('FormArmorBundle:Admin:SessionValide.html.twig', 
+                    array(
+                        'laSession' => $laSession, 
+                        'lesMail' => $lesMail,
+                        'leMessage' => $message
+                        ));
         }
     public function annulerLaSessionAction($idSession)
         {
-        
+            $em = $this->getDoctrine()->getManager();
+            $rep2 = $em->getRepository('FormArmorBundle:Session_formation');
+            $laSession = $rep2->retuSession($idSession);
+             return $this->render('FormArmorBundle:Admin:SessionAnnuler.html.twig', 
+                    array(
+                        'laSession' => $laSession,
+                        ));
         }
+    public function confirmAnnulationSessionAction($idSession, $motif)
+        {
+        $em = $this->getDoctrine()->getManager();
+        $rep = $em->getRepository('FormArmorBundle:Inscription');
+        $rep2 = $em->getRepository('FormArmorBundle:Session_formation');
+        $lesMail = $rep->listeMailuneSession($idSession);
+        $laSession = $rep2->retuSession($idSession);
+        $rep2->closeUneSession($idSession);
+        $transport = \Swift_SmtpTransport::newInstance()
+        ->setUsername('valoo221@gmail.com')->setPassword('Harry20012')
+        ->setHost('smtp.gmail.com')
+        ->setPort(587)->setEncryption('tls');
+        $mailer= \Swift_Mailer::newInstance($transport);
+        $message = \Swift_Message::newInstance()
+        ->setSubject('Annulation d\'inscription a la Session N°'.$idSession.' avec FormArmor')
+        ->setFrom('valoo221@gmail.com','FormArmor Inc.')
+        ->setBcc($lesMail)
+        ->setBody($this->renderView('Email/MailAnnulationSession.html.twig',array('laSession' => $laSession,'motif' => $motif)));
+        $result=$mailer->send($message);
+        $reponse = new Response(json_encode(array('message'=>'Ok')));
+        $reponse->headers->set('Content-Type', 'application/json');
+        return $reponse;
+        }
+    public function AnnulationSessionAction($idSession, $motif)
+    {
+        $em = $this->getDoctrine()->getManager();
+        $rep = $em->getRepository('FormArmorBundle:Inscription');
+        $rep2 = $em->getRepository('FormArmorBundle:Session_formation');
+        $lesMail = $rep->listeMailuneSession($idSession);
+        $laSession = $rep2->retuSession($idSession);
+        return $this->render('FormArmorBundle:Admin:SessionValide.html.twig', 
+                    array(
+                        'laSession' => $laSession, 
+                        'lesMail' => $lesMail,
+                        'motif' => $motif
+                        ));
+    }
 }

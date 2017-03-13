@@ -70,8 +70,10 @@ doctrine:
 
 # Swiftmailer Configuration
 swiftmailer:
-    transport: "%mailer_transport%"
-    host:      "%mailer_host%"
-    username:  "%mailer_user%"
-    password:  "%mailer_password%"
+    transport: "smtp"
+    host:      "smtp-mail.outlook.com"
+    username:  "valentin_dejoue@ive.fr"
+    password:  "!p5^@yV~5ez4V2xi=UZRR)28]3zDd#K3"
+    port:      "587"
+    encryption: "ssl"
     spool:     { type: memory }

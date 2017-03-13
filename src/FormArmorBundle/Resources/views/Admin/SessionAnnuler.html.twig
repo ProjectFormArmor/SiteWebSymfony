@@ -1,0 +1,39 @@
+{% extends "FormArmorBundle::admin_layout.html.twig" %}
+{% block FormArmor_body %}
+    <H2> Voulez-vous vraiment annuler la session qui pour identifiant : {{laSession.id}} qui a pour libelle : {{laSession.formation.libelle}} et qui devrait se déroulé le {{laSession.dateDebut.format('d/m/Y')}}</H2><br>
+    <H3> Si oui , indiquez le motif ci dessous qui sera préciser dans le mail envoyé au client inscrit a la session.</h3>
+    <H3> Si non, Appuyer sur Annuler</h3>
+    <div class="motif">
+    <input  class='form form-control' type='texte' placeholder='Votre Motif' id='motif' name='motif'><br>
+    </div>
+    <button type="button" class="btn btn-success" id='annuler'> Valider la Session </button>
+    <a href="{{path('form_armor_admin_validunesession', {'idSession':laSession.id})}}"><button type="button" class="btn btn-danger">Annuler l'opération</button></a>
+    <script>
+        $('#menu7').attr('class', 'active');
+        $(document).on('click', '#annuler', function(){
+            annuler(document.getElementById('motif').value);
+        });
+        function annuler(motif) 
+        {   
+            if (motif == "") 
+                {
+                var champ = '<div class="form-group has-error has-feedback"><input type="text" placeholder="Merci de renseigner votre champ" class="form form-control" id="motif">' +
+                    '<span class="glyphicon glyphicon-remove form-control-feedback"></span></div>';
+                $('.motif').html(champ);
+                } 
+            else 
+                {
+                var idSession = '{{laSession.id}}';
+                $.ajax({
+                url : '{{ path('form_armor_admin_confirmerannulation') }}/'+idSession+'/'+motif,
+                type : 'GET',
+                success : function(resultatRequete, statut){
+                    console.log(resultatRequete.message)
+                    
+                    window.location = '{{path('form_armor_redirect')}}/'+idSession+'/'+motif;
+                }})
+                
+                }
+        }
+</script>
+{% endblock %}

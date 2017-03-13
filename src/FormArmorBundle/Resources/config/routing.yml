@@ -99,6 +99,20 @@ form_armor_admin_annulelasession:
         _idSession: 0
     requirements: 
         idSession: \d*
+form_armor_admin_confirmerannulation:
+    path:     /admin/validsession/annuler/confirm/{idSession}/{motif}
+    defaults:
+        _controller: FormArmorBundle:Admin:confirmAnnulationSession
+        idSession : 0
+        motif: 0 
+    requirements:
+        idSession: \d*
+form_armor_redirect:
+    path:     /admin/validsession/annuler/confirm/redirect/{idSession}/{motif}
+    defaults:
+        _controller: FormArmorBundle:Admin:AnnulationSession
+        idSession: 0
+        motif: 0
 form_armor_admin_planformation:
     path:     /admin/planformation/{page}
     defaults:
