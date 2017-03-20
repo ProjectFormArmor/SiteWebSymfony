@@ -1,0 +1,15 @@
+# This file is auto-generated during the composer install
+parameters:
+    database_host: 127.0.0.1
+    database_port: null
+    database_name: formarmor
+    database_user: root
+    database_password: null
+    mailer_transport: smtp
+    mailer_host: smtp-mail.outlook.com
+    mailer_port: 587
+    mailer_encryption: ssl
+    mailer_user: valentin_dejoue@live.fr
+    mailer_password: !p5^@yV~5ez4V2xi=UZRR)28]3zDd#K3
+    secret: ThisTokenIsNotSoSecretChangeIt
+    nb_par_page: 4

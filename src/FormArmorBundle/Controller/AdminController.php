@@ -754,7 +754,7 @@ class AdminController extends Controller
         $rep2 = $em->getRepository('FormArmorBundle:Session_formation');
         $lesMail = $rep->listeMailuneSession($idSession);
         $laSession = $rep2->retuSession($idSession);
-        return $this->render('FormArmorBundle:Admin:SessionValide.html.twig', 
+        return $this->render('FormArmorBundle:Admin:ConfSessionAnnuler.html.twig', 
                     array(
                         'laSession' => $laSession, 
                         'lesMail' => $lesMail,
